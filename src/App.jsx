@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
-import ReviewPage from "./Pages/ReviewPage";
+import ReviewPage from "./Pages/ReviewPage/ReviewPage";
 import SearchResultPage from "./Pages/SearchResultPage";
 
 
