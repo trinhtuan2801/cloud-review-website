@@ -6,7 +6,7 @@ import SearchBox from "./SearchBox";
 const SearchResultPage = () => {
   const [searchValue, setSearchValue] = useState("");
   return (
-    <Box sx={{ margin: "20px", backgroundColor: "white", height: "100%" }}>
+    <Box sx={{ margin: "50px", backgroundColor: "white", height: "100%" }}>
       <SearchBox
         value={searchValue}
         setSearchValue={setSearchValue}
