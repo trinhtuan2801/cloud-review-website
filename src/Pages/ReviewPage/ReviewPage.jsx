@@ -14,13 +14,12 @@ const ReviewPage = () => {
         alignItems: "center",
         boxSizing: "border-box",
         paddingX: theme.spacing(6),
-        paddingY: theme.spacing(4),
+        paddingY: theme.spacing(6),
         backgroundColor: "rgb(245, 245, 247)",
       })}
     >
-      <Box marginTop={2} />
       <Overview />
-      <Box marginTop={4} />
+      <Box marginTop={6}/>
       <ReviewSection />
     </Box>
   );

@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 const vote_percent = [53, 43, 4, 0, 0];
 
@@ -32,14 +33,21 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
       sx={(theme) => ({
         height: "fit-content",
         boxSizing: "border-box",
-        padding: theme.spacing(4),
+        paddingLeft: theme.spacing(4),
+        paddingY: theme.spacing(4),
+        paddingRight: theme.spacing(15),
         borderTop: "3px solid rgb(33, 177, 255)",
-        margin: "50px 100px 50px 100px",
-        height: "275px",
+        // margin: "50px 100px 50px 100px",
+        marginTop: theme.spacing(5),
+        height: "fit-content",
+        maxWidth: '1150px',
+        boxSizing: 'border-box',
       })}
     >
-      <Grid container>
-        <Grid item xs={2}>
+      <Box
+        display='flex'
+      >
+        <Box display='flex'>
           <img
             style={{
               padding: "10px",
@@ -53,29 +61,31 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
             src={image}
             alt="nice image"
           />
-        </Grid>
-
-        <Grid item xs={5}>
+          <Box marginLeft={2} />
           <Box>
-            <Typography variant="h5" style={{ fontWeight: 500 }}>
-              {title}
-            </Typography>
+            <Box>
+              <Link to={'/review'}>
+                <Typography variant="h5" style={{ fontWeight: 500 }}>
+                  {title}
+                </Typography>
+              </Link>
+            </Box>
+            <Box display="flex" alignItems="center">
+              <Typography variant="h7">{rating}</Typography>
+              <Box marginLeft={1.5} />
+              <Rating value={rating} precision={0.1} size="small" readOnly />
+              <Box marginLeft={1.5} />
+              <Typography variant="body1" color="rgb(33, 177, 255)">
+                {`${numOfRate} Ratings`}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography>{description}</Typography>
+            </Box>
           </Box>
-          <Box display="flex" alignItems="center">
-            <Typography variant="h7">{rating}</Typography>
-            <Box marginLeft={1.5} />
-            <Rating value={rating} precision={0.1} size="small" readOnly />
-            <Box marginLeft={1.5} />
-            <Typography variant="body1" color="rgb(33, 177, 255)">
-              {`${numOfRate} Ratings`}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography>{description}</Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={1}></Grid>
-        <Grid item xs={4}>
+        </Box>
+        <Box marginLeft={20} />
+        <Box>
           {vote_percent.map((percent, index) => (
             <Box display="flex" key={index} alignItems="center" marginTop={1}>
               <Typography color="black" component="div" variant="body2">
@@ -89,14 +99,14 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
               </Typography>
             </Box>
           ))}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
-      <Box marginTop={4} />
+      {/* <Box marginTop={4} />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button variant="outlined">SEE MORE</Button>
-      </Box>
-    </Paper>
+      </Box> */}
+    </Paper >
   );
 };
 
