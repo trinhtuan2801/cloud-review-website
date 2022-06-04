@@ -1,6 +1,6 @@
 import { Box, Divider, IconButton, InputAdornment, MenuItem, OutlinedInput, Pagination, Paper, TextField, Typography } from "@mui/material"
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Review from "./Review";
 
 const sort_choices = [
@@ -81,13 +81,13 @@ const ReviewSection = () => {
       <Box marginTop={2} />
 
       <Box>
-        {[1, 2, 3, 4, 5].map(() => (
-          <>
+        {[1, 2, 3, 4, 5].map((value, index) => (
+          <Fragment key={index}>
             <Divider />
             <Box marginTop={2} />
             <Review />
             <Box marginTop={2} />
-          </>
+          </Fragment>
         ))}
       </Box>
 
@@ -97,7 +97,7 @@ const ReviewSection = () => {
         display='flex'
         justifyContent='flex-end'
       >
-        <Pagination count={10} page={page} onChange={(e)=>setPage(e.target.value)} color='primary'/>
+        <Pagination count={10} page={page} onChange={(e, value)=>setPage(value)} color='primary'/>
       </Box>
     </Paper>
   )
