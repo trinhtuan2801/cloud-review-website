@@ -3,7 +3,7 @@ import ResultBox from "./ResultBox";
 
 const ResultCard = () => {
   return (
-    <Box sx={{ margin: "20px" }}>
+    <Box sx={{ margin: "20px", padding: "20px" }}>
       <ResultBox
         title={"Google Cloud Platform"}
         description={"Dream, build, and transform with Google Cloud"}
