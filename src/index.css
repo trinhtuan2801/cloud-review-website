@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.background-blue {
+    background: rgb(27, 58, 181);
+}
+
+.background-light-blue {
+    /* background: #ddf1f4; */
+    background: linear-gradient(135deg, rgb(255, 255, 255), rgb(218, 254, 248))
+}
+
+.border-blue {
+    border: 1px solid #5ac8fa;
+}
+
+.color-blue {
+    color: #1E50E5;
+}
+
+.color-light-blue {
+    color: #5ac8fa;
+}
+
+.color-dark-pink {
+    color: #D1287A;
+}
+
+.color-gray {
+    color: #31313C
+}
