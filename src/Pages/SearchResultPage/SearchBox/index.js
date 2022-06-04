@@ -7,7 +7,16 @@ const SearchBox = ({ searchValue, setSearchValue }) => {
     setSearchValue(e.target.value);
   };
   return (
-    <Box sx={{ paddingLeft: "10%", paddingRight: "10%" }}>
+    <Box
+      sx={
+        (theme) => ({
+          height: 'fit-content',
+          width: '100%',
+          maxWidth: '1150px',
+          boxSizing: 'border-box',
+        })
+      }
+    >
       <OutlinedInput
         size="small"
         fullWidth
