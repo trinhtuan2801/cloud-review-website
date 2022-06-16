@@ -1,10 +1,21 @@
 import { Box } from "@mui/material";
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import ReviewPage from "./Pages/ReviewPage/ReviewPage";
 import SearchResultPage from "./Pages/SearchResultPage";
+import { getOverviews } from "./Services/firestore";
 
 const App = () => {
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     let data = await getOverviews()
+  //     console.log('overviews', data)
+  //   }
+  //   getData()
+  // }, [])
+
   return (
     <Box
       sx={{
