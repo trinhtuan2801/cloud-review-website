@@ -1,10 +1,19 @@
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ResultCard from "./ResultCard";
 import SearchBox from "./SearchBox";
+import { getOverviews } from "../../Services/firestore";
 
 const SearchResultPage = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [data, setData] = useState(null);
+
+  useEffect(async () => {
+    let data = await getOverviews();
+    setData(data);
+    console.log(data);
+  }, []);
+
   return (
     <Box
       sx={(theme) => ({
@@ -33,9 +42,10 @@ const SearchResultPage = () => {
         <SearchBox
           value={searchValue}
           setSearchValue={setSearchValue}
+          setData={setData}
         ></SearchBox>
         <Box marginTop={4} />
-        <ResultCard></ResultCard>
+        <ResultCard data={data}></ResultCard>
       </Box>
     </Box>
   );

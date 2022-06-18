@@ -12,8 +12,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 
-const vote_percent = [53, 43, 4, 0, 0];
-
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 5,
   borderRadius: 10,
@@ -27,7 +25,14 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-const ResultBox = ({ title, rating, numOfRate, description, image }) => {
+const ResultBox = ({
+  title,
+  rating,
+  numOfRate,
+  description,
+  image,
+  vote_percent,
+}) => {
   return (
     <Paper
       sx={(theme) => ({
@@ -40,14 +45,12 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
         // margin: "50px 100px 50px 100px",
         marginTop: theme.spacing(5),
         height: "fit-content",
-        maxWidth: '1150px',
-        boxSizing: 'border-box',
+        maxWidth: "1150px",
+        boxSizing: "border-box",
       })}
     >
-      <Box
-        display='flex'
-      >
-        <Box display='flex'>
+      <Box display="flex">
+        <Box display="flex">
           <img
             style={{
               padding: "10px",
@@ -64,7 +67,7 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
           <Box marginLeft={2} />
           <Box>
             <Box>
-              <Link to={'/review'}>
+              <Link to={"/review"}>
                 <Typography variant="h5" style={{ fontWeight: 500 }}>
                   {title}
                 </Typography>
@@ -92,10 +95,13 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
                 {5 - index} Star
               </Typography>
               <Box marginLeft={1} />
-              <BorderLinearProgress value={percent} variant="determinate" />
+              <BorderLinearProgress
+                value={vote_percent[5 - index - 1]}
+                variant="determinate"
+              />
               <Box marginLeft={1} />
               <Typography color="black" component="div" variant="body2">
-                {percent}%
+                {vote_percent[5 - index - 1]}%
               </Typography>
             </Box>
           ))}
@@ -106,7 +112,7 @@ const ResultBox = ({ title, rating, numOfRate, description, image }) => {
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button variant="outlined">SEE MORE</Button>
       </Box> */}
-    </Paper >
+    </Paper>
   );
 };
 

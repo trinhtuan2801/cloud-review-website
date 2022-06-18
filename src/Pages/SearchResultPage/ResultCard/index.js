@@ -1,38 +1,20 @@
 import { Box } from "@mui/material";
 import ResultBox from "./ResultBox";
 
-const ResultCard = () => {
+const ResultCard = ({ data }) => {
   return (
     <Box>
-      <ResultBox
-        title={"Google Cloud Platform"}
-        description={"by Google"}
-        rating={4.5}
-        numOfRate={500}
-        image={
-          "https://www.gartner.com/imagesrv/apps/peerinsights/images/vendors/logos/google_enterprise-mobility-management-suites.png"
-        }
-      ></ResultBox>
-      <ResultBox
-        title={"Amazon Web Services"}
-        description={
-          "by Amazon"
-        }
-        rating={4.5}
-        numOfRate={500}
-        image={
-          "https://www.gartner.com/imagesrv/apps/peerinsights/images/vendors/logos/amazon-web-services_public-cloud-iaas.png "
-        }
-      ></ResultBox>
-      <ResultBox
-        title={"Google Cloud Platform"}
-        description={"by Google"}
-        rating={4.5}
-        numOfRate={500}
-        image={
-          "https://www.gartner.com/imagesrv/apps/peerinsights/images/vendors/logos/google_enterprise-mobility-management-suites.png"
-        }
-      ></ResultBox>
+      {data?.map((e, i) => (
+        <ResultBox
+          key={`resultbox-${i}`}
+          title={e.name}
+          description={e.creater}
+          rating={e.rating.average}
+          numOfRate={e.rating.total}
+          vote_percent={e.rating.stars}
+          image={e.image}
+        ></ResultBox>
+      ))}
     </Box>
   );
 };
