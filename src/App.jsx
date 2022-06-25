@@ -30,8 +30,8 @@ const App = () => {
       <Routes>
         <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchResultPage />} />
-        <Route path="/review" element={<ReviewPage />} />
+        <Route path="/search/:keyword" element={<SearchResultPage />} />
+        <Route path="/review/:id" element={<ReviewPage />} />
       </Routes>
     </Box>
   );

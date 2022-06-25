@@ -8,6 +8,8 @@ import {
   updateDoc,
   doc,
   setDoc,
+  query,
+  where
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -25,31 +27,42 @@ const db = getFirestore(app)
 
 const COLLECTION = 'cloud_services'
 
-const standardizeName = (str) => {
-  let name = str.trim().toLowerCase()
-  name = str.charAt(0).toUpperCase() + str.slice(1)
+const trimName = (str) => {
+  let name = str.trim()
   return name
 }
 
-export const getDocument = async (doc_name = '') => {
-  let name = standardizeName(doc_name)
-  const docSnap = await getDoc(doc(db, COLLECTION, name))
+export const getDocument = async (id = '') => {
+  const docSnap = await getDoc(doc(db, COLLECTION, id))
   if (docSnap.exists()) {
-    console.log('existed document:', name)
-    return docSnap
+    console.log('found document:', id)
+    return {
+      id: docSnap.id,
+      ...docSnap.data()
+    }
   }
   return null
 }
 
+export const getDocuments = async (doc_name) => {
+  const name = doc_name.trim().toLowerCase()
+  const querySnapshot = await getDocs(collection(db, COLLECTION))
+  let result = []
+  querySnapshot.forEach(doc => {
+    const data = doc.data()
+    if (data.name.toLowerCase().includes(name))
+      result.push({
+        id: doc.id,
+        ...data
+      })
+  })
+  return result
+}
+
 export const addDocument = async (doc_name = '') => {
-  const docSnap = await getDocument(doc_name)
-  if (docSnap) {
-    console.warn('Cant add an existed document:', doc_name)
-    return
-  }
-  let name = standardizeName(doc_name)
+  let name = trimName(doc_name)
   console.log('create new document:', name)
-  await setDoc(doc(db, COLLECTION, name), {
+  await addDoc(collection(db, COLLECTION), {
     name: name,
     creator: '',
     image: '',
@@ -63,30 +76,50 @@ export const addDocument = async (doc_name = '') => {
   })
 }
 
-export const updateDocument = async (doc_name = '', field = '', value) => {
-  let docSnap = await getDocument(doc_name)
-  if (!docSnap) {
+export const updateDocument = async (id = '', field = '', value) => {
+  let service = await getDocument(id)
+  if (!service) {
     console.log('document is not existed')
     return
   }
 
-  let name = standardizeName(doc_name)
-  await updateDoc(doc(db, COLLECTION, name), { [field]: value })
+  await updateDoc(doc(db, COLLECTION, id), { [field]: value })
 }
 
-export const getOverviews = async () => {
-  const docs = await getDocs(collection(db, COLLECTION))
+export const getOverviews = async (doc_name) => {
+  const services = await getDocuments(doc_name)
   let result = []
-  docs.forEach(doc => {
-    const data = doc.data()
+  services.map(service => {
     result.push({
-      name: data.name,
-      creator: data.creator,
-      image: data.image,
-      rating: data.rating
+      id: service.id,
+      name: service.name,
+      creator: service.creator,
+      image: service.image,
+      rating: service.rating
     })
   })
 
   return result
 }
 
+export const addComment = async (id, comment) => {
+  let service = await getDocument(id)
+  if (!service) {
+    console.log('document not found', id)
+    return
+  }
+  console.log(service)
+  let comments = service.comments
+  comments.push(comment)
+  await updateDocument(service.id, 'comments', comments)
+} 
+
+export const getComments = async (id) => {
+  let service = await getDocument(id)
+  if (!service) {
+    console.log('document not found', id)
+    return []
+  }
+  console.log(service)
+  return service.comments
+}

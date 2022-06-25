@@ -26,10 +26,11 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const ResultBox = ({
+  id,
   title,
   rating,
   numOfRate,
-  description,
+  creator,
   image,
   vote_percent,
 }) => {
@@ -44,9 +45,8 @@ const ResultBox = ({
         borderTop: "3px solid rgb(33, 177, 255)",
         // margin: "50px 100px 50px 100px",
         marginTop: theme.spacing(5),
-        height: "fit-content",
-        maxWidth: "1150px",
         boxSizing: "border-box",
+        width: '100%'
       })}
     >
       <Box display="flex">
@@ -67,14 +67,14 @@ const ResultBox = ({
           <Box marginLeft={2} />
           <Box>
             <Box>
-              <Link to={"/review"}>
+              <Link to={`/review/${id}`}>
                 <Typography variant="h5" style={{ fontWeight: 500 }}>
                   {title}
                 </Typography>
               </Link>
             </Box>
             <Box display="flex" alignItems="center">
-              <Typography variant="h7">{rating}</Typography>
+              <Typography variant="h7">{rating.toFixed(1)}</Typography>
               <Box marginLeft={1.5} />
               <Rating value={rating} precision={0.1} size="small" readOnly />
               <Box marginLeft={1.5} />
@@ -83,7 +83,7 @@ const ResultBox = ({
               </Typography>
             </Box>
             <Box>
-              <Typography>{description}</Typography>
+              {creator && <Typography>by {creator}</Typography>}
             </Box>
           </Box>
         </Box>
