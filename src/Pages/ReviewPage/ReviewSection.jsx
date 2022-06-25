@@ -9,7 +9,7 @@ const sort_choices = [
   'Lowest Overall Rating'
 ]
 
-const ReviewSection = () => {
+const ReviewSection = ({reviews}) => {
 
   const [sortBy, setSortBy] = useState('Date')
   const [page, setPage] = useState(1)
@@ -81,11 +81,11 @@ const ReviewSection = () => {
       <Box marginTop={2} />
 
       <Box>
-        {[1, 2, 3, 4, 5].map((value, index) => (
+        {reviews.map((review, index) => (
           <Fragment key={index}>
             <Divider />
             <Box marginTop={2} />
-            <Review />
+            <Review {...review}/>
             <Box marginTop={2} />
           </Fragment>
         ))}

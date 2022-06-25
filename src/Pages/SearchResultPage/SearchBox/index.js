@@ -12,8 +12,6 @@ const SearchBox = ({ searchValue, setSearchValue }) => {
         (theme) => ({
           height: 'fit-content',
           width: '100%',
-          maxWidth: '1150px',
-          boxSizing: 'border-box',
         })
       }
     >

@@ -5,7 +5,8 @@ const HomePage = () => {
   const navigate = useNavigate()
 
   const goSearchPage = () => {
-    navigate('/search')
+    let keyword = document.getElementById('default-search').value
+    navigate(`/search/${keyword}`)
   }
 
   return (

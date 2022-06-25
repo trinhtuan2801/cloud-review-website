@@ -3,12 +3,13 @@ import ResultBox from "./ResultBox";
 
 const ResultCard = ({ data }) => {
   return (
-    <Box>
+    <Box width='100%'>
       {data?.map((e, i) => (
         <ResultBox
+          id={e.id}
           key={`resultbox-${i}`}
           title={e.name}
-          description={e.creater}
+          creator={e.creator}
           rating={e.rating.average}
           numOfRate={e.rating.total}
           vote_percent={e.rating.stars}
