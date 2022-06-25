@@ -9,7 +9,9 @@ const sort_choices = [
   'Lowest Overall Rating'
 ]
 
-const ReviewSection = ({reviews}) => {
+const item_per_page = 4
+
+const ReviewSection = ({ reviews }) => {
 
   const [sortBy, setSortBy] = useState('Date')
   const [page, setPage] = useState(1)
@@ -79,25 +81,27 @@ const ReviewSection = ({reviews}) => {
       </Box>
 
       <Box marginTop={2} />
+      
+      {!!reviews &&
+        <Box>
+          {reviews.slice((page-1)*item_per_page, (page-1)*item_per_page+item_per_page).map((review, index) => (
+            <Fragment key={index}>
+              <Divider />
+              <Box marginTop={2} />
+              <Review {...review} />
+              <Box marginTop={2} />
+            </Fragment>
+          ))}
+        </Box>
+      }
 
-      <Box>
-        {reviews.map((review, index) => (
-          <Fragment key={index}>
-            <Divider />
-            <Box marginTop={2} />
-            <Review {...review}/>
-            <Box marginTop={2} />
-          </Fragment>
-        ))}
-      </Box>
-
-      <Box marginTop={4}/>  
+      <Box marginTop={4} />
 
       <Box
         display='flex'
         justifyContent='flex-end'
       >
-        <Pagination count={10} page={page} onChange={(e, value)=>setPage(value)} color='primary'/>
+        <Pagination count={Math.ceil(reviews.length / item_per_page)} page={page} onChange={(e, value) => setPage(value)} color='primary' />
       </Box>
     </Paper>
   )

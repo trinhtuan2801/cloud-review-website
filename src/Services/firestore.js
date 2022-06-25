@@ -8,8 +8,6 @@ import {
   updateDoc,
   doc,
   setDoc,
-  query,
-  where
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -25,15 +23,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 
-const COLLECTION = 'cloud_services'
-
-const trimName = (str) => {
-  let name = str.trim()
-  return name
+export const COLLECTION = {
+  SERVICES: 'cloud_services',
+  REVIEWS: 'cloud_reviews'
 }
 
-export const getDocument = async (id = '') => {
-  const docSnap = await getDoc(doc(db, COLLECTION, id))
+export const getDocument = async (collection_name, id = '') => {
+  const docSnap = await getDoc(doc(db, collection_name, id))
   if (docSnap.exists()) {
     console.log('found document:', id)
     return {
@@ -44,9 +40,19 @@ export const getDocument = async (id = '') => {
   return null
 }
 
-export const getDocuments = async (doc_name) => {
+export const updateDocument = async (collection_name, id = '', field = '', value) => {
+  let response = await getDocument(collection_name, id)
+  if (!response) {
+    console.log('document is not existed')
+    return
+  }
+
+  await updateDoc(doc(db, collection_name, id), { [field]: value })
+}
+
+export const getServices = async (doc_name) => {
   const name = doc_name.trim().toLowerCase()
-  const querySnapshot = await getDocs(collection(db, COLLECTION))
+  const querySnapshot = await getDocs(collection(db, COLLECTION.SERVICES))
   let result = []
   querySnapshot.forEach(doc => {
     const data = doc.data()
@@ -59,10 +65,10 @@ export const getDocuments = async (doc_name) => {
   return result
 }
 
-export const addDocument = async (doc_name = '') => {
-  let name = trimName(doc_name)
+export const addService = async (service_name = '') => {
+  let name = service_name.trim()
   console.log('create new document:', name)
-  await addDoc(collection(db, COLLECTION), {
+  const docRef = await addDoc(collection(db, COLLECTION.SERVICES), {
     name: name,
     creator: '',
     image: '',
@@ -71,23 +77,30 @@ export const addDocument = async (doc_name = '') => {
       average: 0,
       stars: new Array(5).fill(0)
     },
-    comments: [],
+  })
+  addReviewCollection(docRef.id)
+}
 
+export const addReviewCollection = async (id) => {
+  await setDoc(doc(db, COLLECTION.REVIEWS, id), {
+    reviews: []
   })
 }
 
-export const updateDocument = async (id = '', field = '', value) => {
-  let service = await getDocument(id)
-  if (!service) {
-    console.log('document is not existed')
+export const addReview = async (id, review) => {
+  let response = await getDocument(COLLECTION.REVIEWS, id)
+  if (!response) {
+    console.log('document not found', id)
     return
   }
-
-  await updateDoc(doc(db, COLLECTION, id), { [field]: value })
+  console.log(response)
+  const reviews = response.reviews
+  await updateDocument(COLLECTION.REVIEWS, id, 'reviews', [...reviews, review])
 }
 
+///////////////////////////
 export const getOverviews = async (doc_name) => {
-  const services = await getDocuments(doc_name)
+  const services = await getServices(doc_name)
   let result = []
   services.map(service => {
     result.push({
@@ -102,24 +115,24 @@ export const getOverviews = async (doc_name) => {
   return result
 }
 
-export const addComment = async (id, comment) => {
-  let service = await getDocument(id)
-  if (!service) {
-    console.log('document not found', id)
-    return
+export const getOverview = async (id) => {
+  const service = await getDocument(COLLECTION.SERVICES, id)
+  return {
+    id: service.id,
+    name: service.name,
+    creator: service.creator,
+    image: service.image,
+    rating: service.rating
   }
-  console.log(service)
-  let comments = service.comments
-  comments.push(comment)
-  await updateDocument(service.id, 'comments', comments)
-} 
+}
 
-export const getComments = async (id) => {
-  let service = await getDocument(id)
-  if (!service) {
+export const getReviews = async (id) => {
+  let response = await getDocument(COLLECTION.REVIEWS, id)
+  if (!response) {
     console.log('document not found', id)
     return []
   }
-  console.log(service)
-  return service.comments
+  console.log(response)
+  return response.reviews
 }
+
