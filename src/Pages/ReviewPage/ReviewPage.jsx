@@ -2,9 +2,8 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getComments, getDocument } from "../../Services/firestore";
+import { getOverview, getReviews } from "../../Services/firestore";
 import Overview from "./Overview";
-import Review from "./Review";
 import ReviewSection from "./ReviewSection";
 
 const ReviewPage = () => {
@@ -13,7 +12,8 @@ const ReviewPage = () => {
   const [reviews, setReviews] = useState([])
   useEffect(() => {
     const getData = async () => {
-      let data = await getDocument(id)
+      let data = await getOverview(id)
+      console.log('overview', data)
       setOverview({
         name: data.name,
         creator: data.creator,
@@ -22,7 +22,9 @@ const ReviewPage = () => {
         vote_percent: data.rating.stars,
         image: data.image,
       })
-      setReviews(data.comments)
+      data = await getReviews(id)
+      console.log('review', data)
+      setReviews(data)
     }
     getData()
   }, [id])
@@ -41,9 +43,9 @@ const ReviewPage = () => {
         backgroundColor: "rgb(245, 245, 247)",
       })}
     >
-      <Overview {...overview}/>
+      <Overview {...overview} />
       <Box marginTop={6} />
-      <ReviewSection reviews={reviews}/>
+      <ReviewSection reviews={reviews} />
     </Box>
   );
 };
