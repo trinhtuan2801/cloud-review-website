@@ -18,7 +18,6 @@ const SearchResultPage = () => {
   }
 
   const filterResult = (keyword) => {
-    console.log('search', data, keyword)
     setResults(data.filter(service => service.name.toLowerCase().includes(keyword.toLowerCase())))
   }
 
@@ -63,7 +62,7 @@ const SearchResultPage = () => {
       >
         <Box marginTop={2} />
         <SearchBox
-          value={searchValue}
+          searchValue={searchValue}
           setSearchValue={setSearchValue}
           setData={setData}
         ></SearchBox>
